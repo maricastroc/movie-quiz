@@ -1,29 +1,43 @@
+const star1 = document.getElementById("star-1");
+const star2 = document.getElementById("star-2");
+const star3 = document.getElementById("star-3");
+const star4 = document.getElementById("star-4");
+const star5 = document.getElementById("star-5");
+
 const endingOne = () => {
-    text.classList.add("subtitle");
-    text.classList.add("text-final");
-    text.innerHTML =
-        "<i class='bi bi-emoji-dizzy-fill'></i><p style='font-size: 22px'>Yeah, dude, you desperately need to see more movies...<p>";
+    star1.src = "./imagens/star-solid.svg";
 };
 
 const endingTwo = () => {
-    text.classList.add("subtitle");
-    text.classList.add("text-final");
-    text.innerHTML =
-        "<i class='bi bi-emoji-smile-fill'></i><p style='font-size: 22px'>Okay, we can say you know something about movies...<p>";
+    star1.src = "./imagens/star-solid.svg";
+    star2.src = "./imagens/star-solid.svg";
 };
 
 const endingThree = () => {
-    text.classList.add("subtitle");
-    text.classList.add("text-final");
-    text.innerHTML =
-        "<i class='bi bi-emoji-sunglasses-fill'></i><p style='font-size: 22px'>Hey, I think we'd have a lot to talk about!<br>You did good!<p>";
+    star1.src = "./imagens/star-solid.svg";
+    star2.src = "./imagens/star-solid.svg";
+    star3.src = "./imagens/star-solid.svg";
 };
 
 const endingFour = () => {
-    text.classList.add("subtitle");
-    text.classList.add("text-final");
-    text.innerHTML =
-        "<i class='bi bi-stars'></i><p style='font-size: 22px'>Damn, you're must be an amazing person!<br>Let's be friends!<p>";
+    star1.src = "./imagens/star-solid.svg";
+    star2.src = "./imagens/star-solid.svg";
+    star3.src = "./imagens/star-solid.svg";
+    star4.src = "./imagens/star-solid.svg";
 };
 
-export { endingOne, endingTwo, endingThree, endingFour };
+const endingFive = () => {
+    star1.src = "./imagens/star-solid.svg";
+    star2.src = "./imagens/star-solid.svg";
+    star3.src = "./imagens/star-solid.svg";
+    star4.src = "./imagens/star-solid.svg";
+    star5.src = "./imagens/star-solid.svg";
+};
+
+export {
+    endingOne,
+    endingTwo,
+    endingThree,
+    endingFour,
+    endingFive,
+};

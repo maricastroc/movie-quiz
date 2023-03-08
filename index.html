@@ -11,11 +11,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0"
         />
-        <!-- FONT LINKS -->
-        <link
-            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@100;300;400;500;700;900&family=Titillium+Web:wght@200;300;400;600;700;900&display=swap"
-            rel="stylesheet"
-        />
+
 
         <!-- CSS Bootstrap -->
         <link
@@ -24,6 +20,8 @@
             integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
             crossorigin="anonymous"
         />
+
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
         <!-- Favicon -->
         <link
@@ -39,7 +37,7 @@
         />
 
         <!-- CSS -->
-        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="css/style.css" />
 
         <!-- JS externo -->
         <script src="./src/index.js" type='module' defer></script>
@@ -51,77 +49,71 @@
             Developed by Mariana Castro &copy; 2023
         </div>
         <div class="container">
-            <div class="sidebar">
-                <button class="btn btn-light text-center" id='btn-offcanvas' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMovies" aria-controls="offcanvasMovies">
-                    Want to check the answer? Click me!
-                </button>
-                
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMovies" aria-labelledby="offcanvasMoviesLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasMoviesLabel">Check it out!</h5>
-                        <button type="button" class="btn-close btn-close-white btn-sm text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <div id="text-movie">
-                        </div>
-                    </div>
-                    <div class="dropdown mt-3">
-                        <a id="trailer-link" href="" target="_blank">   
-                        <button class="btn-trailer btn-light" type="button">
-                          Click to check the trailer!
-                        </button>
-                        </a>
-
-                      </div>
-                </div>
-            </div>
-            
-            <div class="main-content">
-                <div class="intro">
-
-                    <h1 class="title" id="title">A very basic movie quiz.</h1>
+            <section class="intro">
+                <h1 class="title" id="title">A very basic movie quiz</h1>
                     <div class="subtitle" id="subtitle">
                         I'm gonna make you an offer you can't refuse: <br> show me how much you know about
                         movies!
                     </div>
-                    <div id="text"></div>
-                    <button id="start-btn">Start Game!</button>
-                    <div class="all-questions">
-                        <span id="question-number"></span>
-                        <h2 id="question-text"></h2>
-                        <div class="all-options">
-                            <li
-                                id="a"
-                                value=""
-                            ></li>
-                            <li
-                                id="b"
-                                value=""
-                            ></li>
-                            <li
-                                id="c"
-                                value=""
-                            ></li>
-                            <li
-                                id="d"
-                                value=""
-                            ></li>
+                    <button class="start-btn">Start Game!</button>
+            </section>
+            <section class="quiz-card disabled">
+                    <div class="progress">
+                        <div class="progress-bar">
+                            <div class="progress-value"></div>
+                        </div>
+                        <div class="percent">
+                            <h5 id="percent">85%</h5>
                         </div>
                     </div>
-                    <div class="footer-questions">
-                        <div class="next-question">
-                            <button type="button" id="continue-btn">Go to Next Question</button>
-                            <i class="bi bi-arrow-right" id="icon-next-question"></i>
-                        </div>
-                        <div id="number-questions">
-                            - Question
-                            <span id="actual-number"></span> of
-                            <span id="total-numbers"></span> -
-                        </div>
+                <div class="all-questions">
+                    <span id="question-number"></span>
+                    <h2 class="question-text"></h2>
+                    <div class="all-options">
+                        <li class="answer" id="a" value=""></li>
+                        <li class="answer" id="b" value=""></li>
+                        <li class="answer" id="c" value=""></li>
+                        <li class="answer" id="d" value=""></li>
                     </div>
-                    <div id="btn"></div>
                 </div>
-            </div>
+                <section class="information">
+                    <div class="score-item">
+                        <h5>score: 
+                            <span id="points"> 0</span>
+                            <span id="total">/15</span>
+                        </h5>
+                    </div>
+                    <div class="info-item">
+                        <h5 id="info-text">good luck!</h5>
+                    </div>
+                    <div class="result-item disabled">
+                        <h5 id="result-text">good luck!</h5>
+                    </div>
+                    <div class="next-item next-disabled">
+                        <h5>next one</h5>
+                        <i class="fas fa-caret-right" id="next-icon"></i>
+                    </div>
+                </section>
+            </section>
+            <section class="final disabled">
+                <h1 class="final-title">That's all, folks!</h1>
+                   
+                    
+                    <div class="final-text">
+                        <h5>You've got <span id="questions-right"></span> questions right!</h5>
+                        <h5 id="feedback">You've got <span id="stars-number"></span>!</h5>
+                    </div>
+                    <div class="stars">
+                        <span><img id="star-1" src="./imagens/star-regular.svg"></img></span>
+                        <span><img id='star-2' src="./imagens/star-regular.svg"></img></span>
+                        <span><img id='star-3' src="./imagens/star-regular.svg"></img></span>
+                        <span><img id='star-4' src="./imagens/star-regular.svg"></img></span>
+                        <span><img id='star-5' src="./imagens/star-regular.svg"></img></span>
+                    </div>
+                    <button class="try-again-btn">Try Again!</button>
+            </section>
+            
+
         </div>
         
         <!-- Script Bootstrap -->

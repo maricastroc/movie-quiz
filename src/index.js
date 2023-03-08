@@ -1,30 +1,7 @@
-//Imports
 import {
-    actualNumber,
-    footerQuestions,
-    subtitle,
-    startBtn,
-    allQuestions,
-    questionText,
-    continueBtn,
-    tryAgainBtn,
-    phrases,
-    btnOffCanvas,
-    textMovie,
-    title,
-    mainTitle,
-    btnTrailer,
-    trailerLink,
-} from "./variables.js";
-
-import {
-    optionA,
-    optionB,
-    optionC,
-    optionD,
-    arrayQuestions,
+    questions,
     options,
-    setNumber,
+    optionsId,
 } from "./all-questions.js";
 
 import {
@@ -32,118 +9,123 @@ import {
     endingTwo,
     endingThree,
     endingFour,
+    endingFive,
 } from "./ending-text.js";
 
 //Preparing interface
+
+const startBtn = document.querySelector(".start-btn");
+const questionText = document.querySelector(
+    ".question-text"
+);
+const nextBtn = document.querySelector(".next-item");
+const resulText = document.getElementById("result-text");
+const resultItem = document.querySelector(".result-item");
+const infoItem = document.querySelector(".info-item");
+
+const starsNum = document.getElementById("stars-number");
+let score = document.getElementById("points");
 let points = 0;
+let progressValue = 7;
+
+const updateBar = () => {
+    document
+        .querySelector(".progress-value")
+        .style.setProperty("width", `${progressValue}%`);
+    document.getElementById(
+        "percent"
+    ).textContent = `${Math.trunc(progressValue)}%`;
+};
 
 startBtn.addEventListener("click", () => {
-    allQuestions.style.display = "flex";
-    footerQuestions.style.display = "flex";
-    startBtn.style.display = "none";
-    subtitle.innerText = `Let's get it started, right?
-        Good luck!`;
+    document
+        .querySelector(".intro")
+        .classList.add("hidden");
+    document
+        .querySelector(".quiz-card")
+        .classList.remove("disabled");
 
-    continueBtn.removeEventListener(
-        "click",
-        generateRandom
-    );
-    title.style.display = "none";
+    nextBtn.removeEventListener("click", generateRandom);
 });
 
-setNumber();
-
 //Getting first question's index
-let randomFirstNumber = Math.floor(
-    Math.random() * arrayQuestions.length
+let randomNum = Math.floor(
+    Math.random() * questions.length
 );
 
 //Setting first question
-options.forEach((option) =>
-    option.classList.add("check-hover")
-);
+updateBar();
+questionText.textContent =
+    questions[randomNum].questionText;
 
-questionText.innerText =
-    arrayQuestions[randomFirstNumber].questionText;
-optionA.innerText =
-    arrayQuestions[randomFirstNumber].optionA;
-optionB.innerText =
-    arrayQuestions[randomFirstNumber].optionB;
-optionC.innerText =
-    arrayQuestions[randomFirstNumber].optionC;
-optionD.innerText =
-    arrayQuestions[randomFirstNumber].optionD;
+for (let i = 0; i < options.length; i++) {
+    options[i].innerText =
+        questions[randomNum][`option${optionsId[i]}`];
+    options[i].setAttribute(
+        "value",
+        randomNum + [`${optionsId[i]}`]
+    );
+}
 
-optionA.setAttribute("value", randomFirstNumber + "A");
-optionB.setAttribute("value", randomFirstNumber + "B");
-optionC.setAttribute("value", randomFirstNumber + "C");
-optionD.setAttribute("value", randomFirstNumber + "D");
+nextBtn.classList.add("next-disabled");
+let firstOne = true;
 
 //Setting new array without first question
-const arrayQuestions2 = arrayQuestions.filter(
-    (n) => n !== arrayQuestions[randomFirstNumber]
+const questions2 = questions.filter(
+    (n) => n !== questions[randomNum]
 );
-
-let firstQuestion = true;
 
 //Verifying answer
 const verifyAnswer = (ev) => {
-    const option = ev.target;
-
-    btnOffCanvas.style.display = "block";
+    const option = ev.currentTarget;
+    option.classList.add("correct-answer");
 
     options.forEach((option) => {
-        option.classList.remove("check-hover"),
-            option.classList.add("uncheck-hover");
         option.removeEventListener("click", verifyAnswer);
+        if (!option.classList.contains("correct-answer"))
+            option.classList.add("disabled-answer");
     });
 
     let currentNumber = option.value;
     let chosenAnswer = option.innerText;
     let correct;
 
-    if (firstQuestion === true) {
-        correct =
-            arrayQuestions[currentNumber].correctOption;
-        textMovie.innerText =
-            arrayQuestions[currentNumber].description;
-        mainTitle.innerText =
-            arrayQuestions[currentNumber].title;
-        trailerLink.href =
-            arrayQuestions[currentNumber].trailer;
+    if (firstOne === true) {
+        correct = questions[currentNumber].correctOption;
     } else {
-        correct =
-            arrayQuestions2[currentNumber].correctOption;
-        textMovie.innerText =
-            arrayQuestions2[currentNumber].description;
-        mainTitle.innerText =
-            arrayQuestions2[currentNumber].title;
-        trailerLink.href =
-            arrayQuestions2[currentNumber].trailer;
+        correct = questions2[currentNumber].correctOption;
     }
 
     if (chosenAnswer === correct) {
-        points += 10;
-        subtitle.innerText = `Well Done!
-            Your actual score is: ${points} points.`;
-        option.style = "color: #54b2e8";
+        points += 1;
+        score.textContent = points;
+        resulText.textContent = `that's right!`;
     } else {
-        subtitle.innerText = `Hmm, that's not right...
-            Your actual score is: ${points} points.`;
-        option.style = "color: #e94747";
+        score.textContent = points;
+        resulText.textContent = `wrong answer!`;
     }
 
-    firstQuestion = false;
+    resultItem.classList.remove("disabled");
+    infoItem.classList.add("disabled");
+    firstOne = false;
 
-    continueBtn.addEventListener("click", () => {
-        btnOffCanvas.style.display = "none";
-        options.forEach((option) =>
-            option.addEventListener("click", verifyAnswer)
-        );
+    nextBtn.classList.remove("next-disabled");
+
+    nextBtn.addEventListener("click", () => {
+        resultItem.classList.add("disabled");
+        infoItem.classList.remove("disabled");
+
+        options.forEach((option) => {
+            option.addEventListener("click", verifyAnswer);
+            option.classList.remove(
+                "correct-answer",
+                "disabled-answer"
+            );
+        });
     });
 };
 
-//Adding functions for options and continueBtn
+//Adding functions for options
 options.forEach((option) =>
     option.addEventListener("click", verifyAnswer)
 );
@@ -151,7 +133,7 @@ options.forEach((option) =>
 options.forEach((option) =>
     option.addEventListener("click", () => {
         verifyAnswer,
-            continueBtn.addEventListener(
+            nextBtn.addEventListener(
                 "click",
                 generateRandom
             );
@@ -162,19 +144,15 @@ options.forEach((option) =>
 let allNumbers = [];
 
 const generateRandom = () => {
-    options.forEach((option) => (option.style = null));
-    const arrayQuestions2 = [
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-    ];
-    let randomNumber = Math.floor(
-        Math.random() * arrayQuestions2.length
+    let randomNum = Math.floor(
+        Math.random() * questions2.length
     );
 
-    if (!allNumbers.includes(randomNumber)) {
-        allNumbers.push(randomNumber);
-        nextQuestion(arrayQuestions2[randomNumber]);
+    if (!allNumbers.includes(randomNum)) {
+        allNumbers.push(randomNum);
+        nextQuestion(randomNum);
     } else {
-        if (allNumbers.length < arrayQuestions2.length) {
+        if (allNumbers.length < questions2.length) {
             generateRandom();
         } else {
             endGame();
@@ -182,70 +160,61 @@ const generateRandom = () => {
     }
 };
 
-//Setting next question
-let orderNumber = 2;
-
 const nextQuestion = (number) => {
-    options.forEach((option) =>
-        option.classList.add("check-hover")
-    );
-    options.forEach((option) =>
-        option.classList.remove("uncheck-hover")
-    );
-    continueBtn.removeEventListener(
-        "click",
-        generateRandom
-    );
+    nextBtn.removeEventListener("click", generateRandom);
+    nextBtn.classList.add("next-disabled");
+    progressValue = progressValue + 6.6;
+    updateBar();
 
-    let randomPhrase = Math.floor(
-        Math.random() * phrases.length
-    );
-
-    subtitle.innerText = phrases[randomPhrase];
-
-    subtitle.classList.remove("right-answer");
-    subtitle.classList.remove("wrong-answer");
-    let currentNumber = orderNumber;
-    actualNumber.innerText = currentNumber;
-    orderNumber++;
-
-    optionA.setAttribute("value", number + "A");
-    optionB.setAttribute("value", number + "B");
-    optionC.setAttribute("value", number + "C");
-    optionD.setAttribute("value", number + "D");
+    for (let i = 0; i < options.length; i++) {
+        options[i].innerText =
+            questions2[number][`option${optionsId[i]}`];
+        options[i].setAttribute(
+            "value",
+            number + [`${optionsId[i]}`]
+        );
+    }
 
     questionText.innerText =
-        arrayQuestions2[number].questionText;
-    optionA.innerText = arrayQuestions2[number].optionA;
-    optionB.innerText = arrayQuestions2[number].optionB;
-    optionC.innerText = arrayQuestions2[number].optionC;
-    optionD.innerText = arrayQuestions2[number].optionD;
+        questions2[number].questionText;
 };
 
 //Finalizing game
 const endGame = () => {
-    allQuestions.style.display = "none";
-    footerQuestions.style.display = "none";
+    document
+        .querySelector(".intro")
+        .classList.add("disabled");
+    document
+        .querySelector(".quiz-card")
+        .classList.add("disabled");
 
-    subtitle.classList.remove("right-answer");
-    subtitle.classList.remove("wrong-answer");
-    subtitle.innerText = `Done!
-        You've got ${points} points.`;
+    document
+        .querySelector(".final")
+        .classList.remove("disabled");
 
-    if (points <= 30) {
-        endingOne();
-    } else if (points > 30 && points <= 60) {
-        endingTwo();
-    } else if (points >= 70 && points < 130) {
-        endingThree();
-    } else if (points >= 130) {
+    document.getElementById("questions-right").textContent =
+        points;
+    console.log(points);
+    if (points >= 13) {
+        endingFive();
+        starsNum.innerText = `5 stars`;
+    } else if (points < 13 && points >= 10) {
         endingFour();
+        starsNum.innerText = `4 stars`;
+    } else if (points < 10 && points >= 7) {
+        endingThree();
+        starsNum.innerText = `3 stars`;
+    } else if (points < 7 && points >= 4) {
+        endingTwo();
+        starsNum.innerText = `2 stars`;
+    } else if (points < 4) {
+        endingOne();
+        starsNum.innerText = `1 star`;
     }
 
-    const btn = document.getElementById("btn");
-    btn.appendChild(tryAgainBtn);
-
-    tryAgainBtn.addEventListener("click", () => {
-        location.reload();
-    });
+    document
+        .querySelector(".try-again-btn")
+        .addEventListener("click", () => {
+            location.reload();
+        });
 };
